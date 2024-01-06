@@ -1,0 +1,108 @@
+[
+    {
+  "title": "The Great Gatsby",
+  "author": "F. Scott Fitzgerald",
+  "isbn": "978-0-7432-7356-5",
+  "gender": "Fiction",
+  "agePublication": "1925-04-10",
+  "inventoryId": 3
+   },
+    {
+        "Title" : "To Kill a Mockingbird",
+        "Author" : "Harper Lee",
+        "ISBN" : "978-0-06-112008-4",
+        "Gender" : "Fiction",
+        "AgePublication" : "1960-07-11"
+    },
+    {
+        "Title" : "1984",
+        "Author" : "George Orwell",
+        "ISBN" : "978-0-452-28423-4",
+        "Gender" : "Fiction",
+        "AgePublication" : "1949-06-08"
+    },
+    {
+        "Title" : "The Hobbit",
+        "Author" : "J.R.R. Tolkien",
+        "ISBN" : "978-0-618-00221-4",
+        "Gender" : "Fantasy",
+        "AgePublication" : "1937, 9, 21"
+    },
+    {
+        "Title" : "Pride and Prejudice",
+        "Author" : "Jane Austen",
+        "ISBN" : "978-0-19-953556-9",
+        "Gender" : "Classic",
+        "AgePublication" : "1813, 1, 28"
+    },
+    {
+        "Title" : "One Hundred Years of Solitude",
+        "Author" : "Gabriel García Márquez",
+        "ISBN" : "978-0-06-112008-4",
+        "Gender" : "Magical Realism",
+        "AgePublication" : "1967, 5, 30"
+    },
+    {
+        "Title" : "The Catcher in the Rye",
+        "Author" : "J.D. Salinger",
+        "ISBN" : "978-0-316-76948-0",
+        "Gender" : "Fiction",
+        "AgePublication" : "1951, 7, 16"
+    },
+    {
+        "Title" : "Beloved",
+        "Author" : "Toni Morrison",
+        "ISBN" : "978-0-394-58727-1",
+        "Gender" : "Fiction",
+        "AgePublication" : "1987, 9, 2"
+    },
+    {
+        "Title" : "The Old Man and the Sea",
+        "Author" : "Ernest Hemingway",
+        "ISBN" : "978-0-684-80122-3",
+        "Gender" : "Fiction",
+        "AgePublication" : "1952, 9, 1"
+    },
+    {
+        "Title" : "The Brief Wondrous Life of Oscar Wao",
+        "Author" : "Junot Díaz",
+        "ISBN" : "978-1-59448-329-5",
+        "Gender" : "Fiction",
+        "AgePublication" : "2007, 9, 6"
+    },
+    {
+        "Title" : "El Coronel no tiene quien le Escriba",
+        "Author" : "Gabriel García Márquez",
+        "ISBN" : "978-84-322-0887-3",
+        "Gender" : "Realismo mágico",
+        "AgePublication" : "1967, 5, 30"
+    },
+    {
+        "Title" : "Ficciones",
+        "Author" : "Jorge Luis Borges",
+        "ISBN" : "978-84-672-5175-3",
+        "Gender" : "Ficción",
+        "AgePublication" : "1944, 6, 1"
+    },
+    {
+        "Title" : "Pedro Páramo",
+        "Author" : "Juan Rulfo",
+        "ISBN" : "978-84-376-0494-5",
+        "Gender" : "Realismo mágico",
+        "AgePublication" : "1955, 6, 1"
+    },
+    {
+        "Title" : "La casa de los espíritus",
+        "Author" : "Isabel Allende",
+        "ISBN" : "978-84-663-1113-1",
+        "Gender" : "Realismo mágico",
+        "AgePublication" : "1982, 1, 1"
+    },
+    {
+        "Title" : "Rayuela",
+        "Author" : "Julio Cortázar",
+        "ISBN" : "978-84-322-0862-0",
+        "Gender" : "Ficción",
+        "AgePublication" : "1963, 1, 1"
+    }
+]
