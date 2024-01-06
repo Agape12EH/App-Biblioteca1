@@ -26,7 +26,6 @@
     <Folder Include="Controllers\CRUD\Queries\" />
     <Folder Include="Controllers\Functionals\" />
     <Folder Include="Controllers\Operationals\" />
-    <Folder Include="Services\" />
   </ItemGroup>
 
 </Project>
