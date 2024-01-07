@@ -13,7 +13,7 @@ namespace App_Biblioteca1
                 .HasKey(b => b.Id);
         }
         public DbSet<Books> Books { get; set; }
-        public DbSet<Inventory> Inventories { get; set; }
+        public DbSet<BookStore> BookStores { get; set; }
         public DbSet<Loan> Loans { get; set; }
         public DbSet<StateBook> StateBooks { get; set; }
         public DbSet<User> Users { get; set; }

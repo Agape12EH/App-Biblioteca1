@@ -4,7 +4,6 @@
     {
         public int Id { get; set; }
         public int QuantityAvailable { get; set; }
-        public int QuantityTotal { get; set; }
         public BooksDTO Book { get; set; }
     }
 }

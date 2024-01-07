@@ -10,8 +10,8 @@
         public DateOnly AgePublication { get; set; }
 
         //Inventories
-        public int InventoryId { get; set; }
-        public Inventory Inventory { get; set; }
+        public int StoreId { get; set; }
+        public BookStore Store { get; set; }
 
         //registeres and Loans
         public List<StateBook> StateBook { get; set; }

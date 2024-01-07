@@ -7,7 +7,7 @@
         public string Lastname { get; set; }
         public string Email { get; set; }
         //Loans
-        public List<Guid> IdLoans { get; set; }
+        public Guid IdLoan { get; set; }
         public List<Loan> Loans { get; set; }
     }
 }

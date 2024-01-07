@@ -2,8 +2,7 @@
 {
     public enum StatesOfLoans
     {
-        Prestado = 0,
-        Devuelto = 1,
-        NoDevuelto = 2,
+        Prestado = 1,
+        Devuelto = 0,
     }
 }
