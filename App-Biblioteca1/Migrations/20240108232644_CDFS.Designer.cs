@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace App_Biblioteca1.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240106191855_FixBug")]
-    partial class FixBug
+    [Migration("20240108232644_CDFS")]
+    partial class CDFS
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,31 @@ namespace App_Biblioteca1.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("App_Biblioteca1.Models.BookStore", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<Guid>("BookId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("DateStored")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("QuantityTotal")
+                        .HasColumnType("int");
+
+                    b.Property<string>("isbnBook")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("BookStore");
+                });
 
             modelBuilder.Entity("App_Biblioteca1.Models.Books", b =>
                 {
@@ -43,7 +68,10 @@ namespace App_Biblioteca1.Migrations
                     b.Property<string>("ISBN")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("InventoryId")
+                    b.Property<int>("StateBookId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("StoreId")
                         .HasColumnType("int");
 
                     b.Property<string>("Title")
@@ -51,34 +79,9 @@ namespace App_Biblioteca1.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("InventoryId");
+                    b.HasIndex("StoreId");
 
                     b.ToTable("Books");
-                });
-
-            modelBuilder.Entity("App_Biblioteca1.Models.Inventory", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("IdBook")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("QuantityAvailable")
-                        .HasColumnType("int");
-
-                    b.Property<int>("QuantityTotal")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("dateInventory")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Inventories");
                 });
 
             modelBuilder.Entity("App_Biblioteca1.Models.Loan", b =>
@@ -87,7 +90,7 @@ namespace App_Biblioteca1.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime?>("ActualReturnDate")
+                    b.Property<DateTime?>("CurrentReturnDate")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("ExpectedReturnDate")
@@ -102,11 +105,11 @@ namespace App_Biblioteca1.Migrations
                     b.Property<Guid?>("UserId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("guidBook")
+                    b.Property<Guid>("guidBooks")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("guidsBooks")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<Guid>("guidUser")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -162,8 +165,8 @@ namespace App_Biblioteca1.Migrations
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("IdLoans")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<Guid?>("IdLoan")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Lastname")
                         .HasColumnType("nvarchar(max)");
@@ -193,13 +196,13 @@ namespace App_Biblioteca1.Migrations
 
             modelBuilder.Entity("App_Biblioteca1.Models.Books", b =>
                 {
-                    b.HasOne("App_Biblioteca1.Models.Inventory", "Inventory")
+                    b.HasOne("App_Biblioteca1.Models.BookStore", "Store")
                         .WithMany("Books")
-                        .HasForeignKey("InventoryId")
+                        .HasForeignKey("StoreId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Inventory");
+                    b.Navigation("Store");
                 });
 
             modelBuilder.Entity("App_Biblioteca1.Models.Loan", b =>
@@ -241,14 +244,14 @@ namespace App_Biblioteca1.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("App_Biblioteca1.Models.BookStore", b =>
+                {
+                    b.Navigation("Books");
+                });
+
             modelBuilder.Entity("App_Biblioteca1.Models.Books", b =>
                 {
                     b.Navigation("StateBook");
-                });
-
-            modelBuilder.Entity("App_Biblioteca1.Models.Inventory", b =>
-                {
-                    b.Navigation("Books");
                 });
 
             modelBuilder.Entity("App_Biblioteca1.Models.User", b =>

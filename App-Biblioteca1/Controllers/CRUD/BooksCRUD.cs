@@ -24,7 +24,7 @@ namespace App_Biblioteca1.Controllers.CRUD
         public async Task<IEnumerable<BooksDTO>> GetAllBooks() =>
              mapper.Map<IEnumerable<BooksDTO>>(await context.Books.ToListAsync());
 
-        //GET:api/BooksCRUD/getAllBooks/{guidBook}
+        //GET:api/BooksCRUD/getAllBooks/{guidBook} SOLO BUSQUEDA CON CODIGO BARRA
         [HttpGet("/getOneBook/{guidBook}")]
         public IActionResult GetOneBook(Guid guidBook)
         {
@@ -33,40 +33,80 @@ namespace App_Biblioteca1.Controllers.CRUD
         }
         //POST:api/BooksCRUD/addOne
         [HttpPost("/addOne")]
-        public async Task<ActionResult> AddOne([FromBody] BooksDTO bookDTO)
+        public async Task<ActionResult> AddBook(BooksDTO bookDTO)
         {
-            var book = mapper.Map<Books>(bookDTO);
-            context.Add(book);
-            await context.SaveChangesAsync();
-            return Ok(book);
-        }
-        //POST:api/BooksCRUD/addVarious
-        [HttpPost("/addVarious")]
-        public async Task<ActionResult> AddVarious([FromBody] IEnumerable<BooksDTO> booksDTO)
-        {
-            var books = mapper.Map<IEnumerable<Books>>(booksDTO);
-            context.AddRange(books);
-            await context.SaveChangesAsync();
-            return Ok(books);
-        }
-        //PUT:api/BooksCRUD/updateBook/{guidBook}
-        [HttpPut("/updateBook/{guidBook}")]
-        public async Task<IActionResult> UpdateBook(Guid guidBook, [FromBody] BooksDTO booksDTO)//
-        {
-            var book = await context.Books.FirstOrDefaultAsync(b => b.Id == guidBook);
-            return book != null ? Ok(mapper.Map<BooksDTO>(book)) : NotFound();
-        }
-        //DELETE:api/BooksCRUD/deleteBook/{guidBook}
-        [HttpDelete("/deleteBook/{guidBook}")]
-        public async Task<ActionResult> DeleteBook(Guid guidBook)
-        {
-            var book = await context.Books.FirstOrDefaultAsync(b => b.Id == guidBook);
-            if (book == null) return NotFound();
+            if(string.IsNullOrEmpty(bookDTO.Title)
+                && string.IsNullOrEmpty(bookDTO.Author)
+                && string.IsNullOrEmpty(bookDTO.ISBN)
+                && string.IsNullOrEmpty(bookDTO.Gender)
+                && (bookDTO.AgePublication).HasValue) 
+            {
+                return BadRequest("Se requiere el ingreso de todos los campos");
+            }
 
-            context.Remove(book);
+            var newBook = mapper.Map<Books>(bookDTO);
+
+            //Buscar en tabla BookStore un registro Isbn 
+            var existingStore = context.BookStore.FirstOrDefault(bs => bs.isbnBook == bookDTO.ISBN);
+
+            if (existingStore == null)
+            {
+                //nuevo Almacen de ese libro
+                var newStore = new BookStore
+                {
+                    DateStored = DateTime.UtcNow,
+                    isbnBook = bookDTO.ISBN,
+                };
+
+                //agregar registro a db
+                context.BookStore.Add(newStore);
+                await context.SaveChangesAsync();
+
+                newBook.StoreId = newStore.Id;
+
+                
+            }
+            else
+            {
+                newBook.StoreId = existingStore.Id;
+
+            }
+
+            context.Books.Add(newBook);
             await context.SaveChangesAsync();
+
+            CreateStateBook(newBook.Id, $"Libro creado: {newBook.Title} con ISBN {newBook.ISBN} creado" +
+                $"y cargado al inventario de la Biblioteca");
+            UpdateQuantity(newBook.ISBN);
+
             return Ok();
+            
         }
+
+        //metodo auxiliar
+        private void CreateStateBook(Guid bookId, string takenAction)
+        {
+            var stateBook = new StateBook
+            {
+                IdBook = bookId,
+                State = Models.Enums.StatesOfBooks.Disponible,
+                Registrationdate = DateTime.UtcNow,
+                TakenActions = takenAction
+            };
+
+            context.StateBooks.Add(stateBook);
+            context.SaveChanges();
+        }
+
+        //metodo auxiliar 
+        private void UpdateQuantity(string IsbnBook)
+        {
+            var bookStore = context.BookStore.FirstOrDefault(bs => bs.isbnBook == IsbnBook);
+            bookStore.QuantityTotal = bookStore.QuantityTotal + 1;
+            context.SaveChanges();
+        }
+
+       
 
         //GET:api/BooksCRUD/searchBy/{property}/{value}
         [HttpGet("/searchBy/{property}/{value}")]

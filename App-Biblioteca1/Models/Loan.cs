@@ -5,17 +5,17 @@ namespace App_Biblioteca1.Models
     public class Loan
     {
         public Guid Id { get; set; } = Guid.NewGuid();
-        public DateTime LoanDate { get; set; }
-        public DateTime ExpectedReturnDate { get; set; }
-        public DateTime? CurrentReturnDate { get; set; }
-        public StatesOfLoans LoanState { get; set; }
+        public DateTime LoanDate { get; set; } = DateTime.Now;
+        public DateTime ExpectedReturnDate { get; set; } //calculado
+        public DateTime? CurrentReturnDate { get; set; }//calculado
+        public StatesOfLoans LoanState { get; set; } = new StatesOfLoans(); //calculado
 
         //Books
-        public Guid guidBooks { get; set; }
+        public Guid guidBooks { get; set; }  // proceso logico de prestamo 
         public List<Books> Books { get; set; }
 
         //User
-        public Guid guidUser { get; set; }
+        public Guid guidUser { get; set; } //proceso logico de prestamo
         public User User { get; set; }
     }
 }

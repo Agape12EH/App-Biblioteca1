@@ -1,108 +1,122 @@
 [
     {
-  "title": "The Great Gatsby",
-  "author": "F. Scott Fitzgerald",
-  "isbn": "978-0-7432-7356-5",
-  "gender": "Fiction",
-  "agePublication": "1925-04-10",
-  "inventoryId": 3
+        "title": "The Great Gatsby",
+        "author": "F. Scott Fitzgerald",
+        "isbn": "978-0-7432-7356-5",
+        "gender": "Fiction",
+        "agePublication": "1925-04-10",
+        "StoreId": 3
    },
     {
-        "Title" : "To Kill a Mockingbird",
-        "Author" : "Harper Lee",
-        "ISBN" : "978-0-06-112008-4",
-        "Gender" : "Fiction",
-        "AgePublication" : "1960-07-11"
+        "title" : "To Kill a Mockingbird",
+        "author" : "Harper Lee",
+        "isbn" : "978-0-06-112008-4",
+        "gender" : "Fiction",
+        "agepublication" : "1960-07-11",
+        "storeid": 3
     },
     {
-        "Title" : "1984",
-        "Author" : "George Orwell",
-        "ISBN" : "978-0-452-28423-4",
-        "Gender" : "Fiction",
-        "AgePublication" : "1949-06-08"
+        "title" : "1984",
+        "author" : "George Orwell",
+        "isbn" : "978-0-452-28423-4",
+        "gender" : "Fiction",
+        "agepublication" : "1949-06-08",
+        "storeid": 3
     },
     {
-        "Title" : "The Hobbit",
-        "Author" : "J.R.R. Tolkien",
-        "ISBN" : "978-0-618-00221-4",
-        "Gender" : "Fantasy",
-        "AgePublication" : "1937, 9, 21"
+        "title" : "The Hobbit",
+        "author" : "J.R.R. Tolkien",
+        "isbn" : "978-0-618-00221-4",
+        "gender" : "Fantasy",
+        "agepublication" : "1937-09-21",
+        "storeid": 3
     },
     {
-        "Title" : "Pride and Prejudice",
-        "Author" : "Jane Austen",
-        "ISBN" : "978-0-19-953556-9",
-        "Gender" : "Classic",
-        "AgePublication" : "1813, 1, 28"
+        "title" : "Pride and Prejudice",
+        "author" : "Jane Austen",
+        "isbn" : "978-0-19-953556-9",
+        "gender" : "Classic",
+        "agepublication" : "1813-01-28",
+        "storeid": 3
     },
     {
-        "Title" : "One Hundred Years of Solitude",
-        "Author" : "Gabriel García Márquez",
-        "ISBN" : "978-0-06-112008-4",
-        "Gender" : "Magical Realism",
-        "AgePublication" : "1967, 5, 30"
+        "title" : "One Hundred Years of Solitude",
+        "author" : "Gabriel García Márquez",
+        "isbn" : "978-0-06-112008-4",
+        "gender" : "Magical Realism",
+        "agepublication" : "1967-05-30",
+        "storeid": 3
     },
     {
-        "Title" : "The Catcher in the Rye",
-        "Author" : "J.D. Salinger",
-        "ISBN" : "978-0-316-76948-0",
-        "Gender" : "Fiction",
-        "AgePublication" : "1951, 7, 16"
+        "title" : "The Catcher in the Rye",
+        "author" : "J.D. Salinger",
+        "isbn" : "978-0-316-76948-0",
+        "gender" : "Fiction",
+        "agepublication" : "1951-07-16",
+        "storeid": 3
     },
     {
-        "Title" : "Beloved",
-        "Author" : "Toni Morrison",
-        "ISBN" : "978-0-394-58727-1",
-        "Gender" : "Fiction",
-        "AgePublication" : "1987, 9, 2"
+        "title" : "Beloved",
+        "author" : "Toni Morrison",
+        "isbn" : "978-0-394-58727-1",
+        "gender" : "Fiction",
+        "agepublication" : "1987-09-02",
+        "storeid": 3
     },
     {
-        "Title" : "The Old Man and the Sea",
-        "Author" : "Ernest Hemingway",
-        "ISBN" : "978-0-684-80122-3",
-        "Gender" : "Fiction",
-        "AgePublication" : "1952, 9, 1"
+        "title" : "The Old Man and the Sea",
+        "author" : "Ernest Hemingway",
+        "isbn" : "978-0-684-80122-3",
+        "gender" : "Fiction",
+        "agepublication" : "1952-09-01",
+        "storeid": 3
     },
     {
-        "Title" : "The Brief Wondrous Life of Oscar Wao",
-        "Author" : "Junot Díaz",
-        "ISBN" : "978-1-59448-329-5",
-        "Gender" : "Fiction",
-        "AgePublication" : "2007, 9, 6"
+        "title" : "The Brief Wondrous Life of Oscar Wao",
+        "author" : "Junot Díaz",
+        "isbn" : "978-1-59448-329-5",
+        "gender" : "Fiction",
+        "agepublication" : "2007-09-06",
+        "storeid": 3
     },
     {
-        "Title" : "El Coronel no tiene quien le Escriba",
-        "Author" : "Gabriel García Márquez",
-        "ISBN" : "978-84-322-0887-3",
-        "Gender" : "Realismo mágico",
-        "AgePublication" : "1967, 5, 30"
+        "title" : "El Coronel no tiene quien le Escriba",
+        "author" : "Gabriel García Márquez",
+        "isbn" : "978-84-322-0887-3",
+        "gender" : "Realismo mágico",
+        "agepublication" : "1967-05-30",
+        "storeid": 3
     },
     {
-        "Title" : "Ficciones",
-        "Author" : "Jorge Luis Borges",
-        "ISBN" : "978-84-672-5175-3",
-        "Gender" : "Ficción",
-        "AgePublication" : "1944, 6, 1"
+        "title" : "Ficciones",
+        "author" : "Jorge Luis Borges",
+        "isbn" : "978-84-672-5175-3",
+        "gender" : "Ficción",
+        "agepublication" : "1944-06-01",
+        "storeid": 3
     },
     {
-        "Title" : "Pedro Páramo",
-        "Author" : "Juan Rulfo",
-        "ISBN" : "978-84-376-0494-5",
-        "Gender" : "Realismo mágico",
-        "AgePublication" : "1955, 6, 1"
+        "title" : "Pedro Páramo",
+        "author" : "Juan Rulfo",
+        "isbn" : "978-84-376-0494-5",
+        "gender" : "Realismo mágico",
+        "agepublication" : "1955-06-01",
+        "storeid": 3
     },
     {
-        "Title" : "La casa de los espíritus",
-        "Author" : "Isabel Allende",
-        "ISBN" : "978-84-663-1113-1",
-        "Gender" : "Realismo mágico",
-        "AgePublication" : "1982, 1, 1"
+        "title" : "La casa de los espíritus",
+        "author" : "Isabel Allende",
+        "isbn" : "978-84-663-1113-1",
+        "gender" : "Realismo mágico",
+        "agepublication" : "1982-01-01",
+        "storeid": 3
     },
     {
-        "Title" : "Rayuela",
-        "Author" : "Julio Cortázar",
-        "ISBN" : "978-84-322-0862-0",
-        "Gender" : "Ficción",
-        "AgePublication" : "1963, 1, 1"
+        "title" : "Rayuela",
+        "author" : "Julio Cortázar",
+        "isbn" : "978-84-322-0862-0",
+        "gender" : "Ficción",
+        "agepublication" : "1963-01-01",
+        "storeid": 3
     }
 ]

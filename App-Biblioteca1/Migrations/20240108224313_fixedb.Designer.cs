@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace App_Biblioteca1.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240107231722_scd")]
-    partial class scd
+    [Migration("20240108224313_fixedb")]
+    partial class fixedb
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -36,15 +36,15 @@ namespace App_Biblioteca1.Migrations
                     b.Property<DateTime>("DateStored")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("IdBook")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("QuantityTotal")
+                    b.Property<int?>("QuantityTotal")
                         .HasColumnType("int");
+
+                    b.Property<string>("isbnBook")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("BookStores");
+                    b.ToTable("BookStore");
                 });
 
             modelBuilder.Entity("App_Biblioteca1.Models.Books", b =>
@@ -65,6 +65,9 @@ namespace App_Biblioteca1.Migrations
                     b.Property<string>("ISBN")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("StateBookId")
+                        .HasColumnType("int");
+
                     b.Property<int>("StoreId")
                         .HasColumnType("int");
 
@@ -73,7 +76,8 @@ namespace App_Biblioteca1.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("StoreId");
+                    b.HasIndex("StoreId")
+                        .IsUnique();
 
                     b.ToTable("Books");
                 });
@@ -159,7 +163,7 @@ namespace App_Biblioteca1.Migrations
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("IdLoan")
+                    b.Property<Guid?>("IdLoan")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Lastname")
@@ -191,8 +195,8 @@ namespace App_Biblioteca1.Migrations
             modelBuilder.Entity("App_Biblioteca1.Models.Books", b =>
                 {
                     b.HasOne("App_Biblioteca1.Models.BookStore", "Store")
-                        .WithMany("Books")
-                        .HasForeignKey("StoreId")
+                        .WithOne("Books")
+                        .HasForeignKey("App_Biblioteca1.Models.Books", "StoreId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

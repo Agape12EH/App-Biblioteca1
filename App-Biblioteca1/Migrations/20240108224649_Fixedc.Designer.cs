@@ -4,6 +4,7 @@ using App_Biblioteca1;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace App_Biblioteca1.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240108224649_Fixedc")]
+    partial class Fixedc
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -30,13 +33,10 @@ namespace App_Biblioteca1.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<Guid>("BookId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<DateTime>("DateStored")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("QuantityTotal")
+                    b.Property<int?>("QuantityTotal")
                         .HasColumnType("int");
 
                     b.Property<string>("isbnBook")
@@ -76,7 +76,8 @@ namespace App_Biblioteca1.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("StoreId");
+                    b.HasIndex("StoreId")
+                        .IsUnique();
 
                     b.ToTable("Books");
                 });
@@ -194,8 +195,8 @@ namespace App_Biblioteca1.Migrations
             modelBuilder.Entity("App_Biblioteca1.Models.Books", b =>
                 {
                     b.HasOne("App_Biblioteca1.Models.BookStore", "Store")
-                        .WithMany("Books")
-                        .HasForeignKey("StoreId")
+                        .WithOne("Books")
+                        .HasForeignKey("App_Biblioteca1.Models.Books", "StoreId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

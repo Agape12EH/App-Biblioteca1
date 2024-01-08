@@ -6,24 +6,24 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace App_Biblioteca1.Migrations
 {
     /// <inheritdoc />
-    public partial class Tables : Migration
+    public partial class fixedb : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Inventories",
+                name: "BookStore",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    dateInventory = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    QuantityAvailable = table.Column<int>(type: "int", nullable: false),
-                    QuantityTotal = table.Column<int>(type: "int", nullable: false)
+                    DateStored = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    QuantityTotal = table.Column<int>(type: "int", nullable: true),
+                    isbnBook = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Inventories", x => x.Id);
+                    table.PrimaryKey("PK_BookStore", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -33,7 +33,8 @@ namespace App_Biblioteca1.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Lastname = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IdLoan = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -50,15 +51,16 @@ namespace App_Biblioteca1.Migrations
                     ISBN = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Gender = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     AgePublication = table.Column<DateOnly>(type: "date", nullable: false),
-                    InventoryId = table.Column<int>(type: "int", nullable: false)
+                    StoreId = table.Column<int>(type: "int", nullable: false),
+                    StateBookId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Books", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Books_Inventories_InventoryId",
-                        column: x => x.InventoryId,
-                        principalTable: "Inventories",
+                        name: "FK_Books_BookStore_StoreId",
+                        column: x => x.StoreId,
+                        principalTable: "BookStore",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -70,10 +72,10 @@ namespace App_Biblioteca1.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     LoanDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ExpectedReturnDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ActualReturnDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    CurrentReturnDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     LoanState = table.Column<int>(type: "int", nullable: false),
-                    guidsBooks = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    guidBook = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    guidBooks = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    guidUser = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
@@ -95,7 +97,9 @@ namespace App_Biblioteca1.Migrations
                     State = table.Column<int>(type: "int", nullable: false),
                     Registrationdate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     TakenActions = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IdUser = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UserActorId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    IdBook = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     BookId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
@@ -138,9 +142,10 @@ namespace App_Biblioteca1.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Books_InventoryId",
+                name: "IX_Books_StoreId",
                 table: "Books",
-                column: "InventoryId");
+                column: "StoreId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_BooksLoan_LoansId",
@@ -182,7 +187,7 @@ namespace App_Biblioteca1.Migrations
                 name: "Users");
 
             migrationBuilder.DropTable(
-                name: "Inventories");
+                name: "BookStore");
         }
     }
 }
