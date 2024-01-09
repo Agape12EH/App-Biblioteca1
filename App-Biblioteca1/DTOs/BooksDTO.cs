@@ -1,4 +1,6 @@
-﻿namespace App_Biblioteca1.DTOs
+﻿using App_Biblioteca1.Models;
+
+namespace App_Biblioteca1.DTOs
 {
     public class BooksDTO
     {
@@ -9,5 +11,6 @@
         public string Gender { get; set; }
         public DateOnly? AgePublication { get; set; }
         public int InventoryId { get; set; }
+        public BookStore Store { get; set; } 
     }
 }

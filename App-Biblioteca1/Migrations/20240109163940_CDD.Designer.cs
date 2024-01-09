@@ -4,6 +4,7 @@ using App_Biblioteca1;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace App_Biblioteca1.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240109163940_CDD")]
+    partial class CDD
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -29,6 +32,9 @@ namespace App_Biblioteca1.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<Guid>("BookId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("DateStored")
                         .HasColumnType("datetime2");
@@ -61,6 +67,9 @@ namespace App_Biblioteca1.Migrations
 
                     b.Property<string>("ISBN")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("StateBookId")
+                        .HasColumnType("int");
 
                     b.Property<int>("StoreId")
                         .HasColumnType("int");
@@ -96,6 +105,12 @@ namespace App_Biblioteca1.Migrations
                     b.Property<Guid?>("UserId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid>("guidBooks")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("guidUser")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
 
                     b.HasIndex("UserId");
@@ -112,6 +127,12 @@ namespace App_Biblioteca1.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<Guid?>("BookId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("IdBook")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("IdUser")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("Registrationdate")
@@ -143,6 +164,9 @@ namespace App_Biblioteca1.Migrations
 
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("IdLoan")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Lastname")
                         .HasColumnType("nvarchar(max)");

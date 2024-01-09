@@ -11,11 +11,9 @@ namespace App_Biblioteca1.Models
         public StatesOfLoans LoanState { get; set; } = new StatesOfLoans(); //calculado
 
         //Books
-        public Guid guidBooks { get; set; }  // proceso logico de prestamo 
-        public List<Books> Books { get; set; }
+        public List<Books> Books { get; set; } = new List<Books>();
 
         //User
-        public Guid guidUser { get; set; } //proceso logico de prestamo
-        public User User { get; set; }
+        public User User { get; set; } = new User();
     }
 }

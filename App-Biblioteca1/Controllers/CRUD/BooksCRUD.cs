@@ -19,10 +19,12 @@ namespace App_Biblioteca1.Controllers.CRUD
             this.mapper = mapper;
 
         }
+
         //GET:api/BooksCRUD/getAllBooks
         [HttpGet("/getAllBooks")]
         public async Task<IEnumerable<BooksDTO>> GetAllBooks() =>
              mapper.Map<IEnumerable<BooksDTO>>(await context.Books.ToListAsync());
+
 
         //GET:api/BooksCRUD/getAllBooks/{guidBook} SOLO BUSQUEDA CON CODIGO BARRA
         [HttpGet("/getOneBook/{guidBook}")]
@@ -31,6 +33,7 @@ namespace App_Biblioteca1.Controllers.CRUD
             var book = context.Books.FirstOrDefault(b => b.Id == guidBook);
             return book != null ? Ok(mapper.Map<BooksDTO>(book)) : NotFound();
         }
+
         //POST:api/BooksCRUD/addOne
         [HttpPost("/addOne")]
         public async Task<ActionResult> AddBook(BooksDTO bookDTO)
@@ -64,7 +67,6 @@ namespace App_Biblioteca1.Controllers.CRUD
 
                 newBook.StoreId = newStore.Id;
 
-                
             }
             else
             {
@@ -72,9 +74,10 @@ namespace App_Biblioteca1.Controllers.CRUD
 
             }
 
+            existingStore.Books.Add(newBook);
             context.Books.Add(newBook);
             await context.SaveChangesAsync();
-
+         
             CreateStateBook(newBook.Id, $"Libro creado: {newBook.Title} con ISBN {newBook.ISBN} creado" +
                 $"y cargado al inventario de la Biblioteca");
             UpdateQuantity(newBook.ISBN);
@@ -83,12 +86,11 @@ namespace App_Biblioteca1.Controllers.CRUD
             
         }
 
-        //metodo auxiliar
+        //metodo auxiliar 1
         private void CreateStateBook(Guid bookId, string takenAction)
         {
             var stateBook = new StateBook
             {
-                IdBook = bookId,
                 State = Models.Enums.StatesOfBooks.Disponible,
                 Registrationdate = DateTime.UtcNow,
                 TakenActions = takenAction
@@ -98,7 +100,7 @@ namespace App_Biblioteca1.Controllers.CRUD
             context.SaveChanges();
         }
 
-        //metodo auxiliar 
+        //metodo auxiliar 2
         private void UpdateQuantity(string IsbnBook)
         {
             var bookStore = context.BookStore.FirstOrDefault(bs => bs.isbnBook == IsbnBook);
@@ -106,7 +108,8 @@ namespace App_Biblioteca1.Controllers.CRUD
             context.SaveChanges();
         }
 
-       
+        //PUT Modificacion de un Libro 
+
 
         //GET:api/BooksCRUD/searchBy/{property}/{value}
         [HttpGet("/searchBy/{property}/{value}")]
@@ -122,19 +125,19 @@ namespace App_Biblioteca1.Controllers.CRUD
             return Ok(mapper.Map<BooksDTO>(book));
         }
 
-        //GET:api/BooksCRUD/searchStateBook/{GuidBook}
-        [HttpGet("/searchStateBook/{GuidBook}")]
-        public IActionResult GetForStateBook(Guid GuidBook)
-        {
-            var stateOfBook = context.StateBooks.FirstOrDefault(b => b.IdBook == GuidBook);
+        ////GET:api/BooksCRUD/searchStateBook/{GuidBook}
+        //[HttpGet("/searchStateBook/{GuidBook}")]
+        //public IActionResult GetForStateBook(Guid GuidBook)
+        //{
+        //    var stateOfBook = context.StateBooks.FirstOrDefault(b => b. == GuidBook);
 
-            if (stateOfBook is null)
-            {
-                return NotFound();
-            }
+        //    if (stateOfBook is null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            return Ok(mapper.Map<StateBookDTO>(stateOfBook));
-        }
+        //    return Ok(mapper.Map<StateBookDTO>(stateOfBook));
+        //}
 
         //GET:api/BooksCRUD/searchLoanBook/{GuidBook}
         [HttpGet("/searchLoanBook/{NameBook}")]
