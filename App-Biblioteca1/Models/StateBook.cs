@@ -9,8 +9,7 @@ namespace App_Biblioteca1.Models
         public DateTime Registrationdate { get; set; } = DateTime.Now;
         public string TakenActions { get; set; }
         //User Resposability
-        public User UserActor { get; set; } = new User();
+        public Books Books { get; set; }
         //Book Affected
-        public Books Book { get; set; } = new Books();
     }
 }

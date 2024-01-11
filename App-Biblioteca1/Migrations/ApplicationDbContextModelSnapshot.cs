@@ -50,7 +50,7 @@ namespace App_Biblioteca1.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateOnly>("AgePublication")
+                    b.Property<DateOnly?>("AgePublication")
                         .HasColumnType("date");
 
                     b.Property<string>("Author")
@@ -75,34 +75,6 @@ namespace App_Biblioteca1.Migrations
                     b.ToTable("Books");
                 });
 
-            modelBuilder.Entity("App_Biblioteca1.Models.Loan", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime?>("CurrentReturnDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("ExpectedReturnDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("LoanDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("LoanState")
-                        .HasColumnType("int");
-
-                    b.Property<Guid?>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Loans");
-                });
-
             modelBuilder.Entity("App_Biblioteca1.Models.StateBook", b =>
                 {
                     b.Property<int>("Id")
@@ -111,7 +83,10 @@ namespace App_Biblioteca1.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<Guid?>("BookId")
+                    b.Property<Guid>("BookId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("BooksId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("Registrationdate")
@@ -123,51 +98,11 @@ namespace App_Biblioteca1.Migrations
                     b.Property<string>("TakenActions")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("UserActorId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("BookId");
-
-                    b.HasIndex("UserActorId");
+                    b.HasIndex("BooksId");
 
                     b.ToTable("StateBooks");
-                });
-
-            modelBuilder.Entity("App_Biblioteca1.Models.User", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Email")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Lastname")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("BooksLoan", b =>
-                {
-                    b.Property<Guid>("BooksId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("LoansId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("BooksId", "LoansId");
-
-                    b.HasIndex("LoansId");
-
-                    b.ToTable("BooksLoan");
                 });
 
             modelBuilder.Entity("App_Biblioteca1.Models.Books", b =>
@@ -181,43 +116,13 @@ namespace App_Biblioteca1.Migrations
                     b.Navigation("Store");
                 });
 
-            modelBuilder.Entity("App_Biblioteca1.Models.Loan", b =>
-                {
-                    b.HasOne("App_Biblioteca1.Models.User", "User")
-                        .WithMany("Loans")
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("App_Biblioteca1.Models.StateBook", b =>
                 {
-                    b.HasOne("App_Biblioteca1.Models.Books", "Book")
-                        .WithMany("StateBook")
-                        .HasForeignKey("BookId");
+                    b.HasOne("App_Biblioteca1.Models.Books", "Books")
+                        .WithMany("StateBooks")
+                        .HasForeignKey("BooksId");
 
-                    b.HasOne("App_Biblioteca1.Models.User", "UserActor")
-                        .WithMany()
-                        .HasForeignKey("UserActorId");
-
-                    b.Navigation("Book");
-
-                    b.Navigation("UserActor");
-                });
-
-            modelBuilder.Entity("BooksLoan", b =>
-                {
-                    b.HasOne("App_Biblioteca1.Models.Books", null)
-                        .WithMany()
-                        .HasForeignKey("BooksId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("App_Biblioteca1.Models.Loan", null)
-                        .WithMany()
-                        .HasForeignKey("LoansId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("Books");
                 });
 
             modelBuilder.Entity("App_Biblioteca1.Models.BookStore", b =>
@@ -227,12 +132,7 @@ namespace App_Biblioteca1.Migrations
 
             modelBuilder.Entity("App_Biblioteca1.Models.Books", b =>
                 {
-                    b.Navigation("StateBook");
-                });
-
-            modelBuilder.Entity("App_Biblioteca1.Models.User", b =>
-                {
-                    b.Navigation("Loans");
+                    b.Navigation("StateBooks");
                 });
 #pragma warning restore 612, 618
         }

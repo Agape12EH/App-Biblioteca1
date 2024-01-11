@@ -6,5 +6,6 @@
         public string Lastname { get; set; }
         public string Email { get; set; }
         public List<LoanDTO> Loans { get; set; }
+        public List<StateBookDTO> StateBooks { get;}
     }
 }

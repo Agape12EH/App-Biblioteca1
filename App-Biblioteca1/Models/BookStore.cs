@@ -8,6 +8,6 @@
 
         //sames Books       
         public string isbnBook { get; set; } //campo que almacena el Isbn de libros repetidos y se nombra como tal
-        public List<Books> Books { get; set; } = new List<Books>(); //campo que se trae los libros con el mismo Isbn correspondiente a la variable anterior
+        public HashSet<Books> Books { get; set; }  //campo que se trae los libros con el mismo Isbn correspondiente a la variable anterior
     }
 }

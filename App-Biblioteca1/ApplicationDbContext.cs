@@ -13,8 +13,8 @@ namespace App_Biblioteca1
         }
         public DbSet<Books> Books { get; set; }
         public DbSet<BookStore> BookStore { get; set; }
-        public DbSet<Loan> Loans { get; set; }
+        //public DbSet<Loan> Loans { get; set; }
         public DbSet<StateBook> StateBooks { get; set; }
-        public DbSet<User> Users { get; set; }
+        //public DbSet<User> Users { get; set; }
     }
 }

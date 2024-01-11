@@ -6,7 +6,7 @@
         public DateTime ExpectedReturnDate { get; set; }
         public DateTime? ActualReturnDate { get; set; }
         public string LoanState { get; set; }
-        public BooksDTO Books { get; set; }
+        public List<BooksDTO> Books { get; set; }
         public UserDTO User { get; set; }
     }
 }

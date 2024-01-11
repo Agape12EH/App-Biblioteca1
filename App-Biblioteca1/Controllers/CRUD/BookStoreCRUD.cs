@@ -21,9 +21,29 @@ namespace App_Biblioteca1.Controllers.CRUD
         }
 
         //GET:api/BooksCRUD/getAllBooks
-        [HttpGet("/BookStore")]
-        public async Task<IEnumerable<InventoryDTO>> GetAllBookStore() =>
-             mapper.Map<IEnumerable<InventoryDTO>>(await context.BookStore.ToListAsync());
+        //[HttpGet("/BookStore")]
+        //public ActionResult<IEnumerable<BookStore>> GetBookStore()
+        //{
+        //    var bookStores = context.BookStore.ToList();
+
+        //    var bookStoreDTO = bookStores.Select(bookStore => new BookStore
+        //    {
+        //        Id = bookStore.Id,
+        //        DateStored = bookStore.DateStored,
+        //        QuantityTotal = bookStore.QuantityTotal,
+        //        isbnBook = bookStore.isbnBook,
+        //        Books = bookStore.Books.Select(book => new Books 
+        //        { 
+        //            Id = book.Id,
+        //            Title = book.Title,
+        //            Author = book.Author,
+        //            AgePublication = book.AgePublication,
+        //        }).ToList()
+            
+        //    }).ToList();
+
+        //    return Ok(bookStoreDTO);
+        //}
 
     }
 
