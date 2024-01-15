@@ -11,8 +11,8 @@ namespace App_Biblioteca1.Models
         //public StatesOfLoans LoanState { get; set; } = new StatesOfLoans(); //calculado
 
         ////Books
-        //public HashSet<Books> Books { get; set; } 
+        //public HashSet<Books> Books { get; set; }
         ////User
-      
+
     }
 }

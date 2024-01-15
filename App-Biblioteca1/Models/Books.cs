@@ -15,6 +15,7 @@ namespace App_Biblioteca1.Models
         //Inventories
         public int StoreId { get; set; } //calculado con el valor retornado cuando crea el inventory
                                          //proceso logico de agregar libro
+        public Byte Delete {  get; set; } 
         public BookStore Store { get; set; }   //registro store traido
 
         //registeres and Loans
