@@ -21,103 +21,131 @@ namespace App_Biblioteca1.Controllers.UseCases.SuperUser
         }
         //GET:api/BooksCRUD/getAllBooks
         [HttpGet("/getLoanCRUD")]
-        public async Task<IEnumerable<BooksDTO>> GetCRUD()
+        public async Task<IEnumerable<LoanDTO>> GetLoanCRUD()
         {
-            var books = await context.Books.ToListAsync();
-            var booksDTO = mapper.Map<IEnumerable<BooksDTO>>(books);
-            return booksDTO;
+            var loans = await context.Books.ToListAsync();
+            var loansDTO = mapper.Map<IEnumerable<LoanDTO>>(loans);
+            return loansDTO;
         }
 
 
         //GET:api/BooksCRUD/getAllBooks/{guidBook}
         [HttpGet("/getOneLoanCRUD/{guidBook}")]
-        public IActionResult GetOneBookCRUD(Guid guidBook)
+        public IActionResult GetOneLoanCRUD(Guid guidLoan)
         {
-            var book = context.Books.FirstOrDefault(b => b.Id == guidBook);
+            var Loan = context.Loans.FirstOrDefault(b => b.Id == guidLoan);
 
-            if (book is null)
+            if (Loan is null)
             {
                 return NotFound();
             }
 
-            var bookDTO = mapper.Map<BooksDTO>(book);
-            return book != null ? Ok(mapper.Map<BooksDTO>(book)) : NotFound();
+            return Loan != null ? Ok(mapper.Map<LoanDTO>(Loan)) : NotFound();
         }
 
         //POST:api/BooksCRUD/addOne
-        [HttpPost("/addOneCRUD")]
-        public async Task<ActionResult> AddOneCRUD([FromBody] BooksDTO bookDTO)
+        [HttpPost("/addOneLoanCRUD")]
+        public async Task<ActionResult> AddOneLoanCRUD([FromBody] LoanDTO LoanDTO)
         {
-            var book = mapper.Map<Books>(bookDTO);
-            context.Add(book);
+            var Loan = mapper.Map<Loan>(LoanDTO);
+            context.Add(Loan);
             await context.SaveChangesAsync();
-            return Ok(book);
+            return Ok(Loan);
         }
 
         //POST:api/BooksCRUD/addVarious
-        [HttpPost("/addVariousCRUD")]
-        public async Task<ActionResult> AddVariousCRUD([FromBody] IEnumerable<BooksDTO> booksDTO)
+        [HttpPost("/addVariousLoanCRUD")]
+        public async Task<ActionResult> AddVariousLoanCRUD([FromBody] IEnumerable<LoanDTO> LoanDTO)
         {
-            var books = mapper.Map<IEnumerable<Books>>(booksDTO);
-            context.AddRange(books);
+            var Loan = mapper.Map<IEnumerable<Loan>>(LoanDTO);
+            context.AddRange(Loan);
             await context.SaveChangesAsync();
-            return Ok(books);
+            return Ok(Loan);
         }
 
         //PUT:api/BooksCRUD/updateBook/{guidBook}
-        [HttpPut("/updateBookCRUD/{guidBook}")]
-        public async Task<IActionResult> UpdateBookCRUD(Guid guidBook, [FromBody] BooksDTO booksDTO)
+        [HttpPut("/updateLoanCRUD/{guidLoan}")]
+        public async Task<IActionResult> UpdateLoanCRUD(Guid guidLoan, [FromBody] LoanDTO LoanDTO)
         {
-            var book = await context.Books.FirstOrDefaultAsync(b => b.Id == guidBook);
-            return book != null ? Ok(mapper.Map<BooksDTO>(book)) : NotFound();
+            var Loan = await context.Loans.FirstOrDefaultAsync(b => b.Id == guidLoan);
+            return Loan != null ? Ok(mapper.Map<LoanDTO>(Loan)) : NotFound();
         }
 
 
         //GET:api/BooksCRUD/searchBy/{property}/{value}
-        [HttpGet("/searchByCRUD/{property}/{value}")]
-        public IActionResult SearchByCRUD(string property, string value)
+        [HttpGet("/searchByLoanCRUD/{property}/{value}")]
+        public IActionResult SearchByLoanCRUD(string property, string value)
         {
-            var book = GetBookByProperty(property, value);
+            var Loan = GetLoanByProperty(property, value);
 
-            if (book is null)
+            if (Loan is null)
             {
                 return NotFound();
             }
-            var bookDTO = mapper.Map<BooksDTO>(book);
-            return Ok(bookDTO);
+            var LoanDTO = mapper.Map<BooksDTO>(Loan);
+            return Ok(LoanDTO);
 
         }
 
         //DELETE:api/BooksCRUD/deleteBook/{guidBook}
-        [HttpDelete("/deleteBookCRUD/{guidBook}")]
-        public async Task<ActionResult> DeleteCRUD(Guid guidBook)
+        [HttpDelete("/deleteLoanCRUD/{guidLoan}")]
+        public async Task<ActionResult> DeleteLoanCRUD(Guid guidLoan)
         {
-            var book = await context.Books.FirstOrDefaultAsync(b => b.Id == guidBook);
-            if (book is null)
+            var Loan = await context.Loans.FirstOrDefaultAsync(b => b.Id == guidLoan);
+            if (Loan is null)
 
             {
                 return NotFound();
             }
 
-            context.Remove(book);
+            context.Remove(Loan);
             await context.SaveChangesAsync();
             return Ok();
         }
 
 
         //GetBookByProperty(property, value);
-        private Books GetBookByProperty(string property, string value)
+        private Loan GetLoanByProperty(string property, string value)
         {
-            return property.ToLower() switch
+            switch (property.ToLower())
             {
-                "name" => context.Books.FirstOrDefault(b => b.Title.Contains(value)),
-                "author" => context.Books.FirstOrDefault(b => b.Author.Contains(value)),
-                "isbn" => context.Books.FirstOrDefault(b => b.ISBN.Contains(value)),
-                "gender" => context.Books.FirstOrDefault(b => b.Gender.Contains(value)),
-                "agepublication" => context.Books.FirstOrDefault(b => b.AgePublication == DateOnly.Parse(value)),
-                "inventory" => context.Books.FirstOrDefault(b => b.StoreId == int.Parse(value)),
-                _ => null,
-            };
+                case "LoanDate":
+                    return context.Loans.FirstOrDefault(b => b.LoanDate == DateTime.Parse(value));
+                case "ExpectedReturnDate":
+                    return context.Loans.FirstOrDefault(b => b.ExpectedReturnDate == DateTime.Parse(value));
+                case "CurrentReturnDate":
+                    return context.Loans.FirstOrDefault(b => b.CurrentReturnDate == DateTime.Parse(value));
+                case "LoanState":
+                    return context.Loans.FirstOrDefault(b => b.LoanState.ToString() == value);
+                case "books":
+                    var LoansList = context.Loans
+                        .Include(b => b.Books)
+                        .Where(b => b.Books.Any())
+                        .ToList();
+                    var filteredLoan = LoansList.Select(b => new Loan
+                    {
+                        Id = b.Id,
+                        ExpectedReturnDate = b.ExpectedReturnDate,
+                        CurrentReturnDate = b.CurrentReturnDate,
+                        LoanState = b.LoanState,
+                        //for inventary of books
+                        Books = b.Books.Where(book => book.Id == Guid.Parse(value)).ToHashSet(),
+                    }).FirstOrDefault();
+
+                    return filteredLoan;
+
+                case "User":
+                    var UserLoan = context.Loans
+                        .Include(b => b.User)
+                        .Where(b => b.User != null)
+                        .ToList();
+                    var filteredUser = UserLoan.FirstOrDefault(b => b.User.Id == Guid.Parse(value));
+                    
+                    return filteredUser;
+
+                default:
+                    return null;
+            }
         }
     }
 }

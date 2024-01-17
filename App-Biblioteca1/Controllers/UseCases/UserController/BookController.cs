@@ -5,7 +5,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace App_Biblioteca1.Controllers.UseCases.User
+namespace App_Biblioteca1.Controllers.UseCases.UserController
 {
     [ApiController]
     [Route("api/UserController")]

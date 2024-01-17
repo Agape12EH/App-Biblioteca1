@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace App_Biblioteca1.Migrations
 {
     /// <inheritdoc />
-    public partial class Fix10 : Migration
+    public partial class cfgwssia : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -27,6 +27,41 @@ namespace App_Biblioteca1.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Users",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Lastname = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Users", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Loans",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    LoanDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ExpectedReturnDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CurrentReturnDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    LoanState = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Loans", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Loans_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Books",
                 columns: table => new
                 {
@@ -36,7 +71,9 @@ namespace App_Biblioteca1.Migrations
                     ISBN = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Gender = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     AgePublication = table.Column<DateOnly>(type: "date", nullable: true),
-                    StoreId = table.Column<int>(type: "int", nullable: false)
+                    StoreId = table.Column<int>(type: "int", nullable: false),
+                    Delete = table.Column<byte>(type: "tinyint", nullable: false),
+                    LoanId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -47,6 +84,11 @@ namespace App_Biblioteca1.Migrations
                         principalTable: "BookStore",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Books_Loans_LoanId",
+                        column: x => x.LoanId,
+                        principalTable: "Loans",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -58,8 +100,8 @@ namespace App_Biblioteca1.Migrations
                     State = table.Column<int>(type: "int", nullable: false),
                     Registrationdate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     TakenActions = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    BookId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    BooksId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                    BooksId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -69,7 +111,17 @@ namespace App_Biblioteca1.Migrations
                         column: x => x.BooksId,
                         principalTable: "Books",
                         principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_StateBooks_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id");
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Books_LoanId",
+                table: "Books",
+                column: "LoanId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Books_StoreId",
@@ -77,9 +129,19 @@ namespace App_Biblioteca1.Migrations
                 column: "StoreId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Loans_UserId",
+                table: "Loans",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_StateBooks_BooksId",
                 table: "StateBooks",
                 column: "BooksId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_StateBooks_UserId",
+                table: "StateBooks",
+                column: "UserId");
         }
 
         /// <inheritdoc />
@@ -93,6 +155,12 @@ namespace App_Biblioteca1.Migrations
 
             migrationBuilder.DropTable(
                 name: "BookStore");
+
+            migrationBuilder.DropTable(
+                name: "Loans");
+
+            migrationBuilder.DropTable(
+                name: "Users");
         }
     }
 }

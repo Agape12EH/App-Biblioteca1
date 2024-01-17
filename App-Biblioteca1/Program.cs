@@ -24,12 +24,12 @@ builder.Services.AddAutoMapper(cfg =>
     cfg.CreateMap<Books, BooksDTO>();
     cfg.CreateMap<BookStore, InventoryDTO>();
     cfg.CreateMap<InventoryDTO, BookStore>();
-    //cfg.CreateMap<Loan, LoanDTO>();
-    //cfg.CreateMap<LoanDTO, Loan>();
+    cfg.CreateMap<Loan, LoanDTO>();
+    cfg.CreateMap<LoanDTO, Loan>();
     cfg.CreateMap<StateBook, StateBookDTO>();
     cfg.CreateMap<StateBookDTO, StateBook>();
-    //cfg.CreateMap<User, UserDTO>();
-    //cfg.CreateMap<UserDTO, User>();
+    cfg.CreateMap<User, UserDTO>();
+    cfg.CreateMap<UserDTO, User>();
 }, typeof(Program));
 
 var app = builder.Build();

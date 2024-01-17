@@ -11,5 +11,6 @@ namespace App_Biblioteca1.Models
         //User Resposability
         public Books Books { get; set; }
         //Book Affected
+        public User User { get; set; }
     }
 }

@@ -4,7 +4,7 @@ namespace App_Biblioteca1.Models
 {
     public class Books
     {
-        [Key]
+        
         public Guid Id { get; set; } = Guid.NewGuid();
         public string Title { get; set; }
         public string Author { get; set; }
@@ -20,6 +20,5 @@ namespace App_Biblioteca1.Models
 
         //registeres and Loans
         public HashSet<StateBook> StateBooks { get; set; }
-        //public HashSet<Loan> Loans { get; set; } 
     }
 }

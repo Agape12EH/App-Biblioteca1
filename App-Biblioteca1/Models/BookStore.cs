@@ -5,9 +5,9 @@
         public int Id { get; set; } //Calculado
         public DateTime DateStored { get; set; }
         public int QuantityTotal { get; set; } = 1; //hace un count de la lista de libros agregados 
+        public string isbnBook { get; set; }
 
         //sames Books       
-        public string isbnBook { get; set; } //campo que almacena el Isbn de libros repetidos y se nombra como tal
         public HashSet<Books> Books { get; set; }  //campo que se trae los libros con el mismo Isbn correspondiente a la variable anterior
     }
 }

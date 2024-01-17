@@ -20,104 +20,137 @@ namespace App_Biblioteca1.Controllers.UseCases.SuperUser
 
         }
         //GET:api/BooksCRUD/getAllBooks
-        [HttpGet("/getBooksCRUD")]
-        public async Task<IEnumerable<BooksDTO>> GetCRUD()
+        [HttpGet("/getUserCRUD")]
+        public async Task<IEnumerable<UserDTO>> GetCRUD()
         {
-            var books = await context.Books.ToListAsync();
-            var booksDTO = mapper.Map<IEnumerable<BooksDTO>>(books);
-            return booksDTO;
+            var Users = await context.Users.ToListAsync();
+            var UserDTO = mapper.Map<IEnumerable<UserDTO>>(Users);
+            return UserDTO;
         }
 
 
         //GET:api/BooksCRUD/getAllBooks/{guidBook}
-        [HttpGet("/getOneBookCRUD/{guidBook}")]
-        public IActionResult GetOneBookCRUD(Guid guidBook)
+        [HttpGet("/getOneUserCRUD/{guidUser}")]
+        public IActionResult GetOneUserCRUD(Guid guidUser)
         {
-            var book = context.Books.FirstOrDefault(b => b.Id == guidBook);
+            var User = context.Users.FirstOrDefault(b => b.Id == guidUser);
 
-            if (book is null)
+            if (User is null)
             {
                 return NotFound();
             }
-
-            var bookDTO = mapper.Map<BooksDTO>(book);
-            return book != null ? Ok(mapper.Map<BooksDTO>(book)) : NotFound();
+            return User != null ? Ok(mapper.Map<UserDTO>(User)) : NotFound();
         }
 
         //POST:api/BooksCRUD/addOne
-        [HttpPost("/addOneCRUD")]
-        public async Task<ActionResult> AddOneCRUD([FromBody] BooksDTO bookDTO)
+        [HttpPost("/addOneUserCRUD")]
+        public async Task<ActionResult> AddOneUserCRUD([FromBody] UserDTO UserDTO)
         {
-            var book = mapper.Map<Books>(bookDTO);
-            context.Add(book);
+            var User = mapper.Map<User>(UserDTO);
+            context.Add(User);
             await context.SaveChangesAsync();
-            return Ok(book);
+            return Ok(User);
         }
 
         //POST:api/BooksCRUD/addVarious
-        [HttpPost("/addVariousCRUD")]
-        public async Task<ActionResult> AddVariousCRUD([FromBody] IEnumerable<BooksDTO> booksDTO)
+        [HttpPost("/addVariousUserCRUD")]
+        public async Task<ActionResult> AddVariousUserCRUD([FromBody] IEnumerable<UserDTO> UserDTO)
         {
-            var books = mapper.Map<IEnumerable<Books>>(booksDTO);
-            context.AddRange(books);
+            var User = mapper.Map<IEnumerable<User>>(UserDTO);
+            context.AddRange(User);
             await context.SaveChangesAsync();
-            return Ok(books);
+            return Ok(User);
         }
 
         //PUT:api/BooksCRUD/updateBook/{guidBook}
-        [HttpPut("/updateBookCRUD/{guidBook}")]
-        public async Task<IActionResult> UpdateBookCRUD(Guid guidBook, [FromBody] BooksDTO booksDTO)
+        [HttpPut("/updateUserCRUD/{guidUser}")]
+        public async Task<IActionResult> UpdateUserCRUD(Guid guidUser, [FromBody] UserDTO UserDTO)
         {
-            var book = await context.Books.FirstOrDefaultAsync(b => b.Id == guidBook);
-            return book != null ? Ok(mapper.Map<BooksDTO>(book)) : NotFound();
+            var User = await context.Users.FirstOrDefaultAsync(b => b.Id == guidUser);
+            return User != null ? Ok(mapper.Map<UserDTO>(User)) : NotFound();
         }
 
 
         //GET:api/BooksCRUD/searchBy/{property}/{value}
-        [HttpGet("/searchByCRUD/{property}/{value}")]
-        public IActionResult SearchByCRUD(string property, string value)
+        [HttpGet("/searchByUserCRUD/{property}/{value}")]
+        public IActionResult SearchByUserCRUD(string property, string value)
         {
-            var book = GetBookByProperty(property, value);
+            var User = GetUserByProperty(property, value);
 
-            if (book is null)
+            if (User is null)
             {
                 return NotFound();
             }
-            var bookDTO = mapper.Map<BooksDTO>(book);
-            return Ok(bookDTO);
+            var UserDTO = mapper.Map<UserDTO>(User);
+            return Ok(UserDTO);
 
         }
 
         //DELETE:api/BooksCRUD/deleteBook/{guidBook}
-        [HttpDelete("/deleteBookCRUD/{guidBook}")]
-        public async Task<ActionResult> DeleteCRUD(Guid guidBook)
+        [HttpDelete("/deleteUserCRUD/{guidUser}")]
+        public async Task<ActionResult> DeleteUserCRUD(Guid guidUser)
         {
-            var book = await context.Books.FirstOrDefaultAsync(b => b.Id == guidBook);
-            if (book is null)
+            var User = await context.Users.FirstOrDefaultAsync(b => b.Id == guidUser);
+            if (User is null)
 
             {
                 return NotFound();
             }
 
-            context.Remove(book);
+            context.Remove(User);
             await context.SaveChangesAsync();
             return Ok();
         }
 
 
         //GetBookByProperty(property, value);
-        private Books GetBookByProperty(string property, string value)
+        private User GetUserByProperty(string property, string value)
         {
-            return property.ToLower() switch
+            switch (property.ToLower())
             {
-                "name" => context.Books.FirstOrDefault(b => b.Title.Contains(value)),
-                "author" => context.Books.FirstOrDefault(b => b.Author.Contains(value)),
-                "isbn" => context.Books.FirstOrDefault(b => b.ISBN.Contains(value)),
-                "gender" => context.Books.FirstOrDefault(b => b.Gender.Contains(value)),
-                "agepublication" => context.Books.FirstOrDefault(b => b.AgePublication == DateOnly.Parse(value)),
-                "inventory" => context.Books.FirstOrDefault(b => b.StoreId == int.Parse(value)),
-                _ => null,
-            };
+                case "Name":
+                    return context.Users.FirstOrDefault(b => b.Name == value);
+                case "Lastname":
+                    return context.Users.FirstOrDefault(b => b.Lastname == value); 
+                case "Email":
+                    return context.Users.FirstOrDefault(b => b.Email == value);
+                case "Loans":
+                    var LoansList = context.Users
+                        .Include(b => b.Loans)
+                        .Where(b => b.Loans.Any())
+                        .ToList();
+                    var filteredLoans = LoansList.Select(b => new User
+                    {
+                        Id = b.Id,
+                        Name = b.Name,
+                        Lastname = b.Lastname,
+                        Email = b.Email,
+                        //for inventary of books
+                        Loans = b.Loans.Where(loan => loan.Id == Guid.Parse(value)).ToHashSet(),
+                    }).FirstOrDefault();
+
+                    return filteredLoans;
+
+                case "StateBooks":
+                    var StateBookList = context.Users
+                        .Include(b => b.StateBooks)
+                        .Where(b => b.StateBooks.Any())
+                        .ToList();
+                    var filteredStateBook = StateBookList.Select(b => new User
+                    {
+                        Id = b.Id,
+                        Name = b.Name,
+                        Lastname = b.Lastname,
+                        Email = b.Email,
+                        //for inventary of books
+                        StateBooks = (HashSet<StateBook>)b.StateBooks.Where(statebook => statebook.State.ToString() == value),
+                    }).FirstOrDefault();
+
+                    return filteredStateBook;
+
+                default:
+                    return null;
+            }
         }
     }
 }

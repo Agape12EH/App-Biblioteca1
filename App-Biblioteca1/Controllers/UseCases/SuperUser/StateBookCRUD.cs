@@ -20,104 +20,121 @@ namespace App_Biblioteca1.Controllers.UseCases.SuperUser
 
         }
         //GET:api/BooksCRUD/getAllBooks
-        [HttpGet("/getBooksCRUD")]
-        public async Task<IEnumerable<BooksDTO>> GetCRUD()
+        [HttpGet("/getStateBooksCRUD")]
+        public async Task<IEnumerable<StateBookDTO>> GetStateBookCRUD()
         {
-            var books = await context.Books.ToListAsync();
-            var booksDTO = mapper.Map<IEnumerable<BooksDTO>>(books);
-            return booksDTO;
+            var StateBook = await context.StateBooks.ToListAsync();
+            var StateBookDTO = mapper.Map<IEnumerable<StateBookDTO>>(StateBook);
+            return StateBookDTO;
         }
 
 
         //GET:api/BooksCRUD/getAllBooks/{guidBook}
-        [HttpGet("/getOneBookCRUD/{guidBook}")]
-        public IActionResult GetOneBookCRUD(Guid guidBook)
+        [HttpGet("/getOneStateBookCRUD/{id}")]
+        public IActionResult GetOneStateBookCRUD(int id)
         {
-            var book = context.Books.FirstOrDefault(b => b.Id == guidBook);
+            var StateBook = context.StateBooks.FirstOrDefault(b => b.Id == id);
 
-            if (book is null)
+            if (StateBook is null)
             {
                 return NotFound();
             }
-
-            var bookDTO = mapper.Map<BooksDTO>(book);
-            return book != null ? Ok(mapper.Map<BooksDTO>(book)) : NotFound();
+            return StateBook != null ? Ok(mapper.Map<StateBookDTO>(StateBook)) : NotFound();
         }
 
         //POST:api/BooksCRUD/addOne
-        [HttpPost("/addOneCRUD")]
-        public async Task<ActionResult> AddOneCRUD([FromBody] BooksDTO bookDTO)
+        [HttpPost("/addOneStateBookCRUD")]
+        public async Task<ActionResult> AddOneStateBookCRUD([FromBody] StateBookDTO StateBookDTO)
         {
-            var book = mapper.Map<Books>(bookDTO);
-            context.Add(book);
+            var StateBook = mapper.Map<StateBook>(StateBookDTO);
+            context.Add(StateBook);
             await context.SaveChangesAsync();
-            return Ok(book);
+            return Ok(StateBook);
         }
 
         //POST:api/BooksCRUD/addVarious
-        [HttpPost("/addVariousCRUD")]
-        public async Task<ActionResult> AddVariousCRUD([FromBody] IEnumerable<BooksDTO> booksDTO)
+        [HttpPost("/addVariousStateBookCRUD")]
+        public async Task<ActionResult> AddVariousStateBookCRUD([FromBody] IEnumerable<StateBookDTO> StateBookDTO)
         {
-            var books = mapper.Map<IEnumerable<Books>>(booksDTO);
-            context.AddRange(books);
+            var StateBook = mapper.Map<IEnumerable<StateBook>>(StateBookDTO);
+            context.AddRange(StateBook);
             await context.SaveChangesAsync();
-            return Ok(books);
+            return Ok(StateBook);
         }
 
         //PUT:api/BooksCRUD/updateBook/{guidBook}
-        [HttpPut("/updateBookCRUD/{guidBook}")]
-        public async Task<IActionResult> UpdateBookCRUD(Guid guidBook, [FromBody] BooksDTO booksDTO)
+        [HttpPut("/updateStateBookCRUD/{id}")]
+        public async Task<IActionResult> UpdateStateBookCRUD(int id, [FromBody] StateBookDTO StateBookDTO)
         {
-            var book = await context.Books.FirstOrDefaultAsync(b => b.Id == guidBook);
-            return book != null ? Ok(mapper.Map<BooksDTO>(book)) : NotFound();
+            var StateBook = await context.StateBooks.FirstOrDefaultAsync(b => b.Id == id);
+            return StateBook != null ? Ok(mapper.Map<StateBookDTO>(StateBook)) : NotFound();
         }
 
 
         //GET:api/BooksCRUD/searchBy/{property}/{value}
-        [HttpGet("/searchByCRUD/{property}/{value}")]
-        public IActionResult SearchByCRUD(string property, string value)
+        [HttpGet("/searchByStateBookCRUD/{property}/{value}")]
+        public IActionResult SearchByStateBookCRUD(string property, string value)
         {
-            var book = GetBookByProperty(property, value);
+            var StateBook = GetByStateBookProperty(property, value);
 
-            if (book is null)
+            if (StateBook is null)
             {
                 return NotFound();
             }
-            var bookDTO = mapper.Map<BooksDTO>(book);
-            return Ok(bookDTO);
+            var StateBookDTO = mapper.Map<StateBookDTO>(StateBook);
+            return Ok(StateBookDTO);
 
         }
 
         //DELETE:api/BooksCRUD/deleteBook/{guidBook}
-        [HttpDelete("/deleteBookCRUD/{guidBook}")]
-        public async Task<ActionResult> DeleteCRUD(Guid guidBook)
+        [HttpDelete("/deleteStateBookCRUD/{id}")]
+        public async Task<ActionResult> DeleteStateBookCRUD(int id)
         {
-            var book = await context.Books.FirstOrDefaultAsync(b => b.Id == guidBook);
-            if (book is null)
+            var StateBook = await context.StateBooks.FirstOrDefaultAsync(b => b.Id == id);
+            if (StateBook is null)
 
             {
                 return NotFound();
             }
-
-            context.Remove(book);
+            context.Remove(StateBook);
             await context.SaveChangesAsync();
             return Ok();
         }
 
 
         //GetBookByProperty(property, value);
-        private Books GetBookByProperty(string property, string value)
+        private StateBook GetByStateBookProperty(string property, string value)
         {
-            return property.ToLower() switch
+            switch (property.ToLower())
             {
-                "name" => context.Books.FirstOrDefault(b => b.Title.Contains(value)),
-                "author" => context.Books.FirstOrDefault(b => b.Author.Contains(value)),
-                "isbn" => context.Books.FirstOrDefault(b => b.ISBN.Contains(value)),
-                "gender" => context.Books.FirstOrDefault(b => b.Gender.Contains(value)),
-                "agepublication" => context.Books.FirstOrDefault(b => b.AgePublication == DateOnly.Parse(value)),
-                "inventory" => context.Books.FirstOrDefault(b => b.StoreId == int.Parse(value)),
-                _ => null,
-            };
+                case "State":
+                    return context.StateBooks.FirstOrDefault(b => b.State.ToString() == value);
+                case "Registrationdate":
+                    return context.StateBooks.FirstOrDefault(b => b.Registrationdate == DateTime.Parse(value));
+                case "TakenActions":
+                    return context.StateBooks.FirstOrDefault(b => b.TakenActions == value);
+   
+                case "User":
+                    var UserStateBook = context.StateBooks
+                        .Include(b => b.User)
+                        .Where(b => b.User != null)
+                        .ToList();
+                    var filteredUserStateBook = UserStateBook.FirstOrDefault(b => b.User.Id == Guid.Parse(value));
+
+                    return filteredUserStateBook;
+
+                case "Books":
+                    var BooksState = context.StateBooks
+                        .Include(b => b.Books)
+                        .Where(b => b.Books != null)
+                        .ToList();
+                    var filteredBook = BooksState.FirstOrDefault(b => b.Books.Id == Guid.Parse(value));
+
+                    return filteredBook;
+
+                default:
+                    return null;
+            }
         }
     }
 }
