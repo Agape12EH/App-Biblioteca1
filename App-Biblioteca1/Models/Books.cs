@@ -8,6 +8,7 @@ namespace App_Biblioteca1.Models
         public Guid Id { get; set; } = Guid.NewGuid();
         public string Title { get; set; }
         public string Author { get; set; }
+
         public string ISBN { get; set; } //consulta tabla inventories y crea un invenotires y se agrega
         public string Gender { get; set; }
         public DateOnly? AgePublication { get; set; }
